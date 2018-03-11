@@ -1,35 +1,33 @@
-
-var GeoJSON = require('mongoose-geojson-schema');
 var mongoose = require('mongoose');
 
 // create complaint schema
 var complaintSchema = new mongoose.Schema({
-    // user fields
-    username: {
-        type: String
-    },
+    // userId
     userId: {
-        type: Number,
-        minlength: 10,
-        maxlength: 10,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
     },
 
-    // complaint fieds
-    _complaintId: {
-        type: mongoose.Schema.Types.ObjectId
+    // complaint
+    complaintId: {
+        type: String,
+        index: true,
+        unique: true,
+        trim: true
     },
     description: {
         type: String,
     },
-    location: {
-        type: String,
-    },
-    geometry:  {
-        type: mongoose.Schema.Types.Point
-    },
     severity: {
         type: String,
-        enum: ['high','medium','low']
+        enum: ['high','medium','low'],
+        required: true
+    },
+    status: {
+        type: Number,
+        maxlength: 1,
+        requires: true
     }
 });
 var Complaint = module.exports = mongoose.model('Complaint', complaintSchema);
